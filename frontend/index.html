@@ -5,141 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Social Production Games</title>
   <style>
-    :root { --bg:#0a0a0a; --card:#111; --text:#e5e5e5; --muted:#a3a3a3; --primary:#3b82f6; --primaryHover:#2563eb; --border:#333; }
-    * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; line-height:1.6; }
-    .container { max-width:1200px; margin:0 auto; padding:0 20px; } section { padding:80px 0; border-bottom:1px solid var(--border); }
-    h1 { font-size:2.5rem; margin:0 0 16px; } h2 { font-size:2rem; margin:0 0 16px; } h3 { font-size:1.25rem; margin:0 0 8px; }
-    .lead { font-size:1.125rem; color:var(--muted); max-width:700px; margin-bottom:24px; }
-    .badge { display:inline-block; padding:4px 12px; background:#1e3a5f; color:#93c5fd; border-radius:999px; font-size:.875rem; margin-right:8px; margin-bottom:8px; }
-    .badge.primary { background:var(--primary); color:white; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; padding:10px 20px; border-radius:8px; font-weight:600; text-decoration:none; cursor:pointer; border:none; transition:background .2s; }
-    .btn.primary { background:var(--primary); color:white; } .btn.primary:hover { background:var(--primaryHover); }
-    .btn.secondary { background:#1f2937; color:#e5e5e5; } .btn.secondary:hover { background:#374151; }
-    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:24px; }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
-    .links { margin-top:24px; display:flex; gap:16px; flex-wrap:wrap; } .links a { color:var(--muted); text-decoration:none; } .links a:hover { color:var(--text); }
-    footer { text-align:center; padding:40px 0; color:var(--muted); font-size:.875rem; } #dashboard { margin-top:40px; }
-    input, button { padding:10px; margin:4px 0; border-radius:6px; border:1px solid var(--border); background:#1a1a1a; color:var(--text); width:100%; }
-    input::placeholder { color:#525252; } button.btn { width:auto; padding:10px 16px; }
-    .grid-2 > .card > form { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .grid-2 > .card > form > input { grid-column:1 / -1; }
-    .error { color:#f87171; background:#1a1a1a; padding:12px; border-radius:8px; margin:12px 0; } .info { color:#93c5fd; background:#1a1a1a; padding:12px; border-radius:8px; margin:12px 0; }
-    #loading { color:var(--muted); font-style:italic; }
-    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
-    .stat { background:#111; border:1px solid #333; border-radius:8px; padding:16px; text-align:center; }
-    .stat-value { font-size:1.5rem; font-weight:700; color:var(--primary); } .stat-label { color:var(--muted); font-size:.875rem; }
+    :root {
+      --bg:#0b0f1a;
+      --card:#111827;
+      --card-glass:rgba(17,24,39,0.7);
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --primary:#3b82f6;
+      --primaryHover:#2563eb;
+      --success:#10b981;
+      --warning:#f59e0b;
+      --danger:#ef4444;
+      --border:#1f2937;
+      --radius:16px;
+      --shadow:0 10px 40px rgba(0,0,0,0.4);
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      line-height:1.6;
+      min-height:100vh;
+      background-image:
+        radial-gradient(1200px at 30% 20%, rgba(59,130,246,0.08), transparent),
+        radial-gradient(1200px at 70% 80%, rgba(16,185,129,0.08), transparent);
+    }
+    .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+    header { padding:24px 0; border-bottom:1px solid var(--border); backdrop-filter:blur(2px); }
+    .nav-row { display:flex; justify-content:space-between; align-items:center; }
+    h1 { font-size:2rem; margin:0; letter-spacing:-0.02em; }
+    .subtitle { color:var(--muted); font-size:1.125rem; }
+    .badge { display:inline-flex; align-items:center; padding:6px 12px; border-radius:999px; font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+    .badge.live { background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.25); }
+    .badge.testnet { background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.25); }
+    .btn { display:inline-flex; align-items:center; justify-content:center; padding:12px 24px; border-radius:12px; font-weight:600; text-decoration:none; cursor:pointer; border:none; transition:all 0.2s; font-size:1rem; }
+    .btn.primary { background:linear-gradient(90deg,var(--primary),#6366f1); color:white; box-shadow:0 4px 15px rgba(59,130,246,0.3); }
+    .btn.primary:hover { transform:translateY(-1px); box-shadow:0 8px 25px rgba(59,130,246,0.45); }
+    .btn.secondary { background:#1f2937; color:var(--text); border:1px solid var(--border); }
+    .btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+    .spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 1s linear infinite; margin-right:8px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .error { color:var(--danger); background:rgba(239,68,68,0.1); padding:12px; border-radius:8px; margin:12px 0; border:1px solid rgba(239,68,68,0.25); }
+    .success { color:var(--success); background:rgba(16,185,129,0.1); padding:12px; border-radius:8px; margin:12px 0; border:1px solid rgba(16,185,129,0.25); }
+    .card { background:var(--card-glass); border:1px solid var(--border); border-radius:var(--radius); padding:24px; backdrop-filter:blur(4px); box-shadow:var(--shadow); }
+    .card h3 { margin-top:0; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    input, select, textarea { padding:12px; border-radius:10px; border:1px solid var(--border); background:#1f2937; color:var(--text); width:100%; font-size:1rem; }
+    input:focus, select:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(59,130,246,0.25); }
+    .factory-card { margin-top:16px; padding:16px; background:rgba(59,130,246,0.05); border:1px solid rgba(59,130,246,0.15); border-radius:12px; }
+    .factory-card h4 { margin:0 0 8px; color:var(--primary); }
+    footer { text-align:center; padding:40px 0; color:var(--muted); font-size:.875rem; }
+    .note { color:var(--muted); font-size:.875rem; margin-top:8px; }
+    .link { color:var(--primary); text-decoration:none; }
+    .link:hover { text-decoration:underline; }
+    @media (max-width:768px) { .form-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <div id="app">
-    <div class="container" style="padding:40px 0;">
-      <div class="card" style="max-width:400px;margin:0 auto;">
-        <h3>Loading…</h3>
-        <p id="loading">Initializing…</p>
+    <div class="container" style="padding:80px 0;">
+      <div class="card" style="text-align:center;padding:40px;">
+        <div class="spinner" style="margin:0 auto 16px;"></div>
+        <p>Initializing…</p>
       </div>
     </div>
   </div>
 
   <script>
-    // TODO: set these after deployment
     const CONTRACT_ADDRESS = '0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d';
     const RPC_URL = 'https://sepolia.base.org';
-    const BASE_SEPOLIA_CHAIN_ID = '0x14a34'; // 84532
+    const BASE_SEPOLIA_CHAIN_ID = '0x14a34';
 
-    // Selectors (hardcoded)
+    // Minimal selectors (replace if mismatched)
     const SELECT = {
       mintFactory: '0x9b4ea848',
-      produce: '0x9e2f1def', // example, replace with actual
+      produce: '0x9e2f1def',
       sellGood: '0x9645b2f6',
-      setFeeBps: '0x3c14a0f6' // placeholder
+      setFeeBps: '0x3c14a0f6',
+      feeBps: '0x540165a9',
+      balanceOf: '0x70a08231'
     };
 
-    function hexPad(str, width) { if (!str.startsWith('0x')) str='0x'+str; const needed=width*2-(str.length-2); return needed>0 ? '0x'+'0'.repeat(needed)+str.slice(2) : str; }
-    async function rpcCall(method, params=[]) { const res=await fetch(RPC_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jsonrpc:'2.0',id:1,method,params})}); const r=await res.json(); if(r.error) throw new Error(r.error.message); return r.result; }
-    async function getWalletAddress() { if(!window.ethereum) throw new Error('No wallet'); const acc=await window.ethereum.request({method:'eth_requestAccounts'}); return acc[0]; }
+    async function rpcCall(method, params=[]){
+      const res = await fetch(RPC_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({jsonrpc:'2.0',id:1,method,params}) });
+      const r = await res.json();
+      if(r.error) throw new Error(r.error.message);
+      return r.result;
+    }
 
-    function encodeFn(name, types, vals) {
-      const sel = SELECT[name] || '0x00000000';
+    async function getWalletAddress(){
+      if(!window.ethereum) throw new Error('No wallet');
+      const acc = await window.ethereum.request({method:'eth_requestAccounts'});
+      return acc[0];
+    }
+
+    function encodeFn(name, types, vals){
+      const sel = SELECT[name];
       let args='';
       for(let i=0;i<types.length;i++){
         const t=types[i], v=vals[i];
         if(t==='address') args+=v.replace(/^0x/,'').padStart(64,'0');
         if(t==='uint256') args+=BigInt(v).toString(16).padStart(64,'0');
-        if(t==='bytes') args+=v.replace(/^0x/,'');
       }
       return sel+args;
     }
 
-    function decodeUintArray(data){
-      try{
-        let hex=data.startsWith('0x')?data.slice(2):data;
-        const vals=[]; for(let i=0;i<hex.length;i+=64){ vals.push(BigInt('0x'+hex.slice(i,i+64))); } return vals;
-      }catch(e){ return []; }
-    }
-
     class App{
-      constructor(){ this.account=null; this.wrongNetwork=false; this.currentChainId=null; this.factories={}; this.goodsPerFactory={}; }
+      constructor(){
+        this.account=null; this.wrongNetwork=false; this.feeBps=250; this.factoryCount=0; this.factories=[];
+      }
       async init(){
         try{
-          document.getElementById('loading').textContent='Connecting wallet…';
-          this.account=await getWalletAddress();
-          const chainId=await window.ethereum.request({method:'eth_chainId'});
-          this.currentChainId=chainId; this.wrongNetwork=(chainId!==BASE_SEPOLIA_CHAIN_ID);
-          document.getElementById('loading').textContent=this.wrongNetwork?'Wrong network':'Loading data…';
-          if(!this.wrongNetwork){ await this.loadFactories(); }
+          this.account = await getWalletAddress();
+          const chainId = await window.ethereum.request({method:'eth_chainId'});
+          this.wrongNetwork = (chainId !== BASE_SEPOLIA_CHAIN_ID);
+          if(!this.wrongNetwork){
+            await this.loadFee();
+            await this.loadFactories();
+          }
           this.render();
         }catch(err){ this.renderError(err.message); }
       }
+      async loadFee(){
+        const res = await rpcCall('eth_call',[{to:CONTRACT_ADDRESS,data:SELECT.feeBps},'latest']);
+        this.feeBps = Number('0x'+res)/100;
+      }
       async loadFactories(){
-        // For MVP: just list factory tokens owned by account
-        const balCall = await rpcCall('eth_call',[{to:CONTRACT_ADDRESS,data:encodeFn('balanceOf',['address','uint256'],[this.account,0])},'latest']);
-        // decode uint256 balance
-        const bal = BigInt('0x'+balCall);
-        // get factory IDs owned: need events or a mapping getter; skip for MVP
-        this.factories = {};
+        // For MVP: get balance of type 0 (factories) and then fetch IDs from events (omitted). We'll just allow manual entry.
+        this.factoryCount = 0; this.factories = [];
       }
       async switchNetwork(){
         try{
           await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:BASE_SEPOLIA_CHAIN_ID}]});
-          this.wrongNetwork=false; await this.loadFactories(); this.render();
+          this.wrongNetwork=false; await this.loadFee(); this.render();
         }catch(err){ this.renderError('Switch failed: '+err.message); }
       }
       async mintFactory(e){
         e.preventDefault();
-        const level=BigInt(e.target.level.value);
+        const level = BigInt(e.target.level.value);
         try{
-          const tx=await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('mintFactory',['uint256'],[level])}]});
-          alert('Tx: '+tx); await this.loadFactories();
+          const tx = await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('mintFactory',['uint256'],[level])}]});
+          alert('Tx: '+tx);
         }catch(err){ alert('Error: '+err.message); }
       }
       async produce(e){
         e.preventDefault();
-        const fid=BigInt(e.target.factoryId.value);
+        const fid = BigInt(e.target.factoryId.value);
         try{
-          const tx=await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('produce',['uint256'],[fid])}]});
+          const tx = await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('produce',['uint256'],[fid])}]});
           alert('Tx: '+tx);
         }catch(err){ alert('Error: '+err.message); }
       }
-      async sell(e){
+      async sellGood(e){
         e.preventDefault();
-        const goodsId=BigInt(e.target.goodsId.value);
-        const price=BigInt(e.target.price.value);
+        const goodsId = BigInt(e.target.goodsId.value);
+        const price = BigInt(e.target.price.value);
         try{
-          const tx=await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('sellGood',['uint256','uint256'],[goodsId,price])}]});
+          const tx = await window.ethereum.request({method:'eth_sendTransaction',params:[{to:CONTRACT_ADDRESS,data:encodeFn('sellGood',['uint256','uint256'],[goodsId,price])}]});
           alert('Tx: '+tx);
         }catch(err){ alert('Error: '+err.message); }
       }
-      renderError(msg){ document.getElementById('app').innerHTML=`<div class="container"><div class="error">${msg}</div></div>`; }
+      renderError(msg){
+        document.getElementById('app').innerHTML=`
+          <div class="container" style="padding:80px 0;">
+            <div class="card" style="max-width:500px;margin:0 auto;text-align:center;">
+              <h3 style="color:var(--danger)">Error</h3>
+              <p style="color:var(--muted)">${msg}</p>
+              <button class="btn primary" onclick="app.init()" style="margin-top:16px;">Retry</button>
+            </div>
+          </div>`;
+      }
       render(){
-        const account=this.account||'Not connected';
         document.getElementById('app').innerHTML=`
           <div>
-            <header style="padding:20px 0;border-bottom:1px solid var(--border);">
-              <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+            <header>
+              <div class="container nav-row">
                 <div>
-                  <h1 style="font-size:1.5rem;margin:0;">Social Production Games</h1>
-                  <p style="color:var(--muted);margin:0;">ERC-1155 Factory & Marketplace</p>
+                  <h1>Social Production <span>Games</span></h1>
+                  <p class="subtitle">ERC-1155 Factory & Marketplace</p>
                 </div>
                 <nav>
+                  <span class="badge testnet">Base Sepolia</span>
                   <button class="btn secondary" onclick="app.init()">Refresh</button>
                   ${this.account?`<button class="btn secondary" onclick="app.disconnect()">Disconnect</button>`:''}
                 </nav>
@@ -148,66 +196,73 @@
 
             ${this.wrongNetwork?`
             <div class="container" style="padding:20px 0;">
-              <div class="card" style="border-color:#f87171;">
-                <h3 style="color:#f87171;">Wrong Network</h3>
-                <p>Switch to Base Sepolia (chainId <code>${this.currentChainId||'?'}</code>).</p>
+              <div class="card" style="border-color:var(--danger);text-align:center;">
+                <h3 style="color:var(--danger)">Wrong Network</h3>
+                <p style="color:var(--muted)">Switch to Base Sepolia.</p>
                 <button class="btn primary" onclick="app.switchNetwork()">Switch to Base Sepolia</button>
               </div>
             </div>`:''}
 
-            <section class="container">
-              <span class="badge primary">Base Sepolia</span>
-              <span class="badge">ERC-1155</span>
-              <h1>Micro-Factory</h1>
-              <p class="lead">Mint factories, produce goods, sell on the marketplace with a 2.5% fee.</p>
-              <p>Connected: ${account.slice(0,6)}...${account.slice(-4)}</p>
-            </section>
+            <main class="container" style="padding:40px 0;">
+              <div class="card">
+                <h3 style="margin-top:0;">About</h3>
+                <p>The Social Factory mints level 1–5 factories (ERC‑1155). Factories produce goods with a cooldown (24h/level). Sell goods on the marketplace; a configurable fee (currently <strong>${this.feeBps}%</strong>) goes to the contract owner.</p>
+              </div>
 
-            <section class="container">
-              <div class="grid-2">
+              <div class="grid-2" style="margin-top:24px;">
                 <div class="card">
-                  <h3>Mint Factory (2.5 ZK ETH fee)</h3>
-                  <form onsubmit="app.mintFactory(event)">
-                    <input name="level" placeholder="Level (1-5)" required />
+                  <h3>Mint Factory</h3>
+                  <form onsubmit="app.mintFactory(event)" class="form-grid">
+                    <input name="level" type="number" placeholder="Level (1-5)" required />
                     <button class="btn primary" type="submit">Mint</button>
                   </form>
                 </div>
                 <div class="card">
-                  <h3>Produce</h3>
-                  <form onsubmit="app.produce(event)">
+                  <h3>Produce Goods</h3>
+                  <form onsubmit="app.produce(event)" class="form-grid">
                     <input name="factoryId" placeholder="Factory ID" required />
                     <button class="btn primary" type="submit">Produce</button>
                   </form>
                 </div>
               </div>
+
               <div class="card" style="margin-top:24px;">
                 <h3>Sell Good</h3>
-                <form onsubmit="app.sell(event)">
+                <form onsubmit="app.sellGood(event)" class="form-grid">
                   <input name="goodsId" placeholder="Goods ID" required />
                   <input name="price" placeholder="Price (wei)" required />
                   <button class="btn primary" type="submit">Sell</button>
                 </form>
+                <p class="note">Seller burns the good and receives (price - fee%). Fee is sent to owner.</p>
               </div>
-            </section>
+            </main>
 
             <footer>
               <div class="container">
                 <p>Built by <a href="https://github.com/eidolon-agent" target="_blank">Eidolon</a>.</p>
-                <div class="links" style="justify-content:center;">
-                  <a href="https://github.com/eidolon-agent/social-production-games" target="_blank">GitHub</a>
-                </div>
-                <p style="margin-top:24px;opacity:0.6;">MIT License</p>
+                <p style="opacity:0.6;margin-top:8px;">Contract: <code style="background:#1f2937;padding:2px 6px;border-radius:4px;">${CONTRACT_ADDRESS}</code></p>
+                <p style="opacity:0.6;">MIT License</p>
               </div>
             </footer>
           </div>
         `;
       }
       disconnect(){ this.account=null; this.renderNoWallet(); }
-      renderNoWallet(){ document.getElementById('app').innerHTML=`<div class="container" style="padding:40px 0;"><div class="card" style="max-width:400px;margin:0 auto;"><h3>Connect Wallet</h3><div class="error">No wallet</div><a href="https://metamask.io/" target="_blank" class="btn primary">Install MetaMask</a></div></div>`; }
+      renderNoWallet(){
+        document.getElementById('app').innerHTML=`
+          <div class="container" style="padding:80px 0;">
+            <div class="card" style="max-width:400px;margin:0 auto;text-align:center;">
+              <h3>Connect Wallet</h3>
+              <p style="color:var(--muted)">Install MetaMask to interact.</p>
+              <a href="https://metamask.io/" target="_blank" class="btn primary" style="margin-top:16px;">Get MetaMask</a>
+              <button class="btn secondary" onclick="app.init()" style="margin-top:8px;">Retry</button>
+            </div>
+          </div>`;
+      }
     }
 
     const app=new App(); window.app=app;
-    (async()=>{ if(typeof window.ethereum==='undefined'){ app.renderNoWallet(); }else{ try{ await app.init(); }catch(err){ app.renderError('Init failed: '+err.message); } } })();
+    (async()=>{ if(!window.ethereum){ app.renderNoWallet(); return; } try{ await app.init(); }catch(err){ app.renderError('Init failed: '+err.message); } })();
   </script>
 </body>
 </html>

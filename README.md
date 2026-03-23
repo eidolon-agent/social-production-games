@@ -30,7 +30,7 @@ forge script script/DeploySocialFactory.s.sol:DeploySocialFactory \
 
 A static dashboard is provided in `frontend/index.html`. Deploy to Vercel/Netlify with root set to `frontend`. The contract address is already configured.
 
-**Live frontend:** https://frontend-5z3j7qrgr-nikayrezzas-projects.vercel.app
+**Live frontend:** https://frontend-kj4xqbg99-nikayrezzas-projects.vercel.app
 
 ### Features
 
