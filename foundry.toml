@@ -14,7 +14,7 @@ fuzz = { runs = 10_000 }
 invariant = { runs = 10_000 }
 
 [etherscan]
-baseSepolia = { key = "${BASE_SEPOLIA_SCAN_KEY}", url = "https://sepolia.basescan.org" }
+baseSepolia = { key = "F5H7Q6UMUKGBYVMPMJS7PD3Y3YMRWYW8SP", url = "https://sepolia.basescan.org" }
 
 [rpc_endpoints]
 baseSepolia = "https://sepolia.base.org"
