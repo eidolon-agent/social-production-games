@@ -45,6 +45,10 @@ forge script script/DeploySocialFactory.s.sol:DeploySocialFactory \
 
 A static dashboard is provided in `frontend/index.html`. Deploy to Vercel/Netlify with root set to `frontend`. Update `CONTRACT_ADDRESS` and `RPC_URL` in the file before deploying.
 
+- **Live:** https://social-production-games.vercel.app/
+- **Contract:** `0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d` (Base Sepolia)
+- **Basescan:** https://sepolia.basescan.org/address/0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d
+
 ### Features
 
 - Connect wallet (MetaMask)
