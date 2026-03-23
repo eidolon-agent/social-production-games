@@ -10,30 +10,11 @@ Revenue-generating onchain experiments on Base. First project: **Micro-Factory**
 - Sell goods: fee set by owner (default 2.5%)
 - Fees collected to owner wallet
 
-## Prerequisites
-
-- Foundry installed
-- Base Sepolia RPC URL (e.g., `https://sepolia.base.org`)
-- Private key with Base Sepolia ETH
-
-## Environment
+## Deploy
 
 ```bash
 export BASE_SEPOLIA_RPC_URL="https://sepolia.base.org"
 export PRIVATE_KEY="0x..."
-export ETHERSCAN_API_KEY="..."  # optional for verification
-```
-
-## Build & Test
-
-```bash
-forge build
-forge test --gas-report
-```
-
-## Deploy to Base Sepolia
-
-```bash
 forge script script/DeploySocialFactory.s.sol:DeploySocialFactory \
   --rpc-url $BASE_SEPOLIA_RPC_URL \
   --private-key $PRIVATE_KEY \
@@ -41,20 +22,22 @@ forge script script/DeploySocialFactory.s.sol:DeploySocialFactory \
   --verify
 ```
 
+**Deployed on Base Sepolia:**
+- Contract: `0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d`
+- Basescan: https://sepolia.basescan.org/address/0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d
+
 ## Frontend
 
-A static dashboard is provided in `frontend/index.html`. Deploy to Vercel/Netlify with root set to `frontend`. Update `CONTRACT_ADDRESS` and `RPC_URL` in the file before deploying.
+A static dashboard is provided in `frontend/index.html`. Deploy to Vercel/Netlify with root set to `frontend`. The contract address is already configured.
 
-- **Live:** https://social-production-games.vercel.app/
-- **Contract:** `0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d` (Base Sepolia)
-- **Basescan:** https://sepolia.basescan.org/address/0x7aBEEDe541b425F8Ddb6014A427A21c194AE152d
+**Live frontend:** https://frontend-5z3j7qrgr-nikayrezzas-projects.vercel.app
 
 ### Features
 
 - Connect wallet (MetaMask)
-- Mint factory
-- Produce goods
-- Sell goods (ETH price)
+- Mint factory (level 1–5)
+- Produce goods (cooldown 24h/level)
+- Sell goods (ETH price, 2.5% fee to owner)
 - View factory tree
 - Automatic network check (Base Sepolia)
 
@@ -66,7 +49,7 @@ A static dashboard is provided in `frontend/index.html`. Deploy to Vercel/Netlif
 
 ## Roadmap
 
-- ERC-20 token for in-gamecurrency
+- ERC-20 token for in-game currency
 - The Graph indexing for production history
 - Upgradeable contracts (proxy pattern)
 - NFTs for factory skins/upgrades
